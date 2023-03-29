@@ -7,6 +7,7 @@ import MyWelcome from '@/components/MyWelcome.vue'
 import MyUsers from '@/components/user/MyUsers.vue'
 import MyRights from '@/components/Power/MyRights.vue'
 import MyRoles from '@/components/Power/MyRoles.vue'
+import CateGories from '@/components/goods/CateGories.vue'
 
 Vue.use(VueRouter)
 
@@ -22,7 +23,8 @@ const router = new VueRouter({
         { path: 'welcome', component: MyWelcome },
         { path: '/users', component: MyUsers },
         { path: '/rights', component: MyRights },
-        { path: '/roles', component: MyRoles }
+        { path: '/roles', component: MyRoles },
+        { path: '/categories', component: CateGories }
       ]
     }
   ]
