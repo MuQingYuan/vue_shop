@@ -409,7 +409,7 @@ export default {
         }
       ).catch((err) => err)
       if (dataConfirm !== 'confirm') {
-        return this.$message.error('取消删除参数操作!')
+        return this.$message.info('取消删除参数操作!')
       } else {
         const { data: res } = await this.$http({
           method: 'delete',
