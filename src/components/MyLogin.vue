@@ -65,8 +65,9 @@ export default {
     },
     comfirmLoginForm() {
       this.$refs.loginFormRef.validate(async(valid) => {
-        if (!valid) return console.log('数据请求失败')
-        else {
+        if (!valid) {
+          return this.$message({ message: '数据请求失败', type: 'error' })
+        } else {
           const { data: res } = await this.$http({
             url: 'login',
             method: 'post',
@@ -75,7 +76,6 @@ export default {
               password: this.loginForm.password
             }
           })
-          console.log(res)
           if (res.meta.status !== 200) {
             this.$message({
               message: '登录失败！',

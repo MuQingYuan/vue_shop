@@ -280,12 +280,10 @@ export default {
         return this.$message.error('获取商品分类失败!')
       } else {
         this.cateList = res.data
-        console.log(this.cateList)
       }
     },
     handleChange() {
       // 级联选择框选中项变化，会触发这个函数
-      console.log(this.selectedCateKeys)
       this.getParamsData()
     },
     handleTabClick() {
@@ -305,7 +303,6 @@ export default {
       if (res.meta.status !== 200) {
         return this.$message.error('获取参数列表失败!')
       } else {
-        console.log(res.data)
         res.data.forEach((value, index, arr) => {
           value.attr_vals =
             value.attr_vals !== '' ? value.attr_vals.split(' ') : []

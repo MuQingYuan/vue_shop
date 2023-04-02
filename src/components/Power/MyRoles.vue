@@ -328,8 +328,6 @@ export default {
     },
     editRolrList(id) {
       // 编辑角色事件
-      console.log(id)
-      console.log(this.editForm.roleName)
       this.$refs.editRoleRefs.validate(async(valid) => {
         if (!valid) {
           return this.$message.error('修改角色失败!')
@@ -415,7 +413,6 @@ export default {
         return this.$message.error('获取权限列表失败!')
       } else {
         this.rightsList = res.data
-        console.log(this.rightsList)
       }
       this.getLeafKeys(role, this.defKeys) // 递归获取三级节点的id
       this.setRightDialogVisible = true

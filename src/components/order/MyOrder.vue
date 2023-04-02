@@ -203,7 +203,6 @@ export default {
       } else {
         this.total = res.data.total
         this.orderList = res.data.goods
-        console.log(this.orderList)
       }
     },
     handleCurrentChange(newPage) {
@@ -292,7 +291,6 @@ export default {
           location: ''
         }
       ]
-      console.log(this.progressInfo)
     },
     serach() {
       // 订单搜索事件

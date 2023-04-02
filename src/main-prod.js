@@ -9,26 +9,31 @@ import axios from 'axios'
 import TreeTable from 'vue-table-with-tree-grid'
 // 导入富文本编辑器
 import VueQuillEditor from 'vue-quill-editor'
-// 导入富文本编辑器对应的样式
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
+// 导入NProgress 包对应的JS和css
+import NProgress from 'nprogress'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
 axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
 
+// 在requset拦截器中，展示进度条NProgress.start()
 axios.interceptors.request.use((config) => {
   // 拦截器
   config.headers.Authorization = sessionStorage.getItem('token')
+  NProgress.start()
   return config
+})
+// 在response拦截器中，隐藏进度条NProgress.done()
+axios.interceptors.response.use((response) => {
+  NProgress.done()
+  return response
 })
 Vue.component('tree-table', TreeTable) // 注册树型表格组件
 Vue.use(VueQuillEditor) // 注册富文本编辑器
 
 Vue.filter('timeFormat', function(origin) {
   // 时间过滤器
-  const date = new Date(origin)
+  const date = new Date(origin * 1000)
   const y = date.getFullYear()
   const m = (date.getMonth() + 1 + '').padStart(2, '0')
   const d = (date.getDate() + '').padStart(2, '0')

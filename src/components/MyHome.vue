@@ -104,7 +104,6 @@ export default {
       else {
         this.menuList = res.data
       }
-      console.log(this.menuList)
     },
     // 展开与折叠菜单
     toggleCollapse() {
