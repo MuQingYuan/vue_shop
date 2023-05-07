@@ -10,7 +10,27 @@
         />
         <span>电商后台管理系统</span>
       </div>
-      <el-button type="info" @click="logout">退出</el-button>
+      <!-- <el-button class="outLogn" type="info" @click="outLognDialog"
+        >退出</el-button
+      > -->
+      <div class="right-area">
+        <img src="@/assets/img/tx.jpeg" class="avatar" />
+        <el-popover
+          placement="top-start"
+          width="150"
+          trigger="hover"
+          content="点击退出登录"
+          @click="outLognDialog"
+        >
+          <el-button
+            class="btn"
+            style="outline: none; border: none"
+            @click="outLognDialog"
+            >退出登录</el-button
+          >
+          <span slot="reference">{{ avatarMessage.username }}</span>
+        </el-popover>
+      </div>
     </el-header>
     <!-- 页面主体区域 -->
     <el-container>
@@ -21,8 +41,8 @@
         </div>
         <!-- 侧边栏菜单区域 -->
         <el-menu
-          background-color="#333744"
-          text-color="#fff"
+          background-color="#fff"
+          text-color="#000"
           active-text-color="#409EFF"
           unique-opened
           :collapse="isCollapse"
@@ -70,9 +90,22 @@
 
 <script>
 export default {
-  created() {
+  async created() {
     this.getMenuList()
     this.activePath = sessionStorage.getItem('activePath')
+    const { data: res } = await this.$http({
+      method: 'post',
+      url: 'login',
+      data: {
+        username: 'admin',
+        password: '123456'
+      }
+    })
+    if (res.meta.status !== 200) {
+      this.$message.error('获取登录用户信息失败!')
+    } else {
+      this.avatarMessage = res.data
+    }
   },
   data() {
     return {
@@ -86,7 +119,8 @@ export default {
         145: 'iconfont icon-baobiao'
       },
       isCollapse: false,
-      activePath: ''
+      activePath: '',
+      avatarMessage: {}
     }
   },
   methods: {
@@ -113,6 +147,21 @@ export default {
     saveNavState(activePath) {
       sessionStorage.setItem('activePath', activePath)
       this.activePath = activePath
+    },
+    async outLognDialog() {
+      // 退出对话框提示
+      const confirm = await this.$confirm('是否退出登录?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch((err) => err)
+      if (confirm !== 'confirm') {
+        return this.$message.info('已经取消退出操作!')
+      } else {
+        sessionStorage.removeItem('token')
+        this.$message.success('退出成功!')
+        this.$router.push('/login')
+      }
     }
   }
 }
@@ -127,7 +176,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #373d41;
+  background-color: #53c3f1;
   color: #fff;
   font-size: 20px;
 
@@ -135,12 +184,24 @@ export default {
     display: flex;
     align-items: center;
     span {
-      padding-left: 15px;
+      padding-left: 5px;
+    }
+  }
+
+  .right-area {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    cursor: pointer;
+    .avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
     }
   }
 }
 .el-aside {
-  background-color: #333744;
+  background-color: #fff;
   .el-menu {
     border-right: none;
   }
@@ -152,11 +213,19 @@ export default {
   margin-right: 10px;
 }
 .toggle-button {
-  background-color: #4a5064;
+  background-color: #fff;
   font-size: 18px;
   line-height: 24px;
-  color: #fff;
+  color: #000;
   text-align: center;
   cursor: pointer;
+  &:hover {
+    background-color: #dddddd;
+  }
+}
+.outLogn {
+  background-color: #ccffcc;
+  border: none;
+  color: #000;
 }
 </style>

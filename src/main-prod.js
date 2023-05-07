@@ -14,7 +14,7 @@ import NProgress from 'nprogress'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
-axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
+axios.defaults.baseURL = 'http://47.108.115.132:8889/api/private/v1/'
 
 // 在requset拦截器中，展示进度条NProgress.start()
 axios.interceptors.request.use((config) => {

@@ -9,70 +9,118 @@
 
     <!-- 卡片视图 -->
     <el-card>
-      <div id="main" style="width: 750px; height: 400px"></div>
+      <div class="home">
+        <el-row :gutter="30">
+          <el-col :span="6" v-for="item in list" :key="item.num">
+            <el-card class="box-card">
+              <img :src="item.url" />
+              <div class="right-area">
+                <div class="top">{{ item.title }}</div>
+                <div class="buttom">{{ item.num }}</div>
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
+        <el-row :gutter="30">
+          <el-col :span="6">
+            <el-card class="welcome">
+              <img src="@/assets/img/tx.jpeg" class="avatar" />
+              <h1>欢迎登录</h1>
+            </el-card>
+          </el-col>
+          <el-col :span="18">
+            <el-card id="main"></el-card>
+          </el-col>
+        </el-row>
+        <el-row :gutter="30">
+          <el-col :span="8">
+            <el-card id="pie-left"></el-card>
+          </el-col>
+          <el-col :span="8">
+            <el-card id="pie-middle"></el-card>
+          </el-col>
+          <el-col :span="8">
+            <el-card id="pie-right"></el-card>
+          </el-col>
+        </el-row>
+      </div>
     </el-card>
   </div>
 </template>
 
 <script>
-import * as echarts from 'echarts'
+import { init } from '../../components/useEcharts'
 export default {
-  created() {},
-  async mounted() {
-    // mounted中此时页面dom结构已经渲染完毕
-    // 基于准备好的dom，初始化echarts实例
-    const myChart = echarts.init(document.getElementById('main'))
-
-    const { data: res } = await this.$http({
-      // 获取折现图数据
-      method: 'get',
-      url: 'reports/type/1'
-    })
-    if (res.meta.status !== 200) {
-      return this.$message.error('获取折线图数据失败! ')
-    }
-    // 准备要渲染的数据
-    const result = { ...this.options, ...res.data }
-    // 调用eachrts方法渲染数据
-    myChart.setOption(result)
+  mounted() {
+    init()
   },
   data() {
     return {
-      options: {
-        // 需要合并的数据
-        title: {
-          text: '用户来源'
+      list: [
+        {
+          title: '访问量',
+          num: 10400,
+          url: require('@/assets/img/home/user.svg')
         },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'cross',
-            label: {
-              backgroundColor: '#E9EEF3'
-            }
-          }
+        {
+          title: '信息',
+          num: 3721,
+          url: require('@/assets/img/home/message.svg')
         },
-        grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true
+        {
+          title: '收入',
+          num: 162973,
+          url: require('@/assets/img/home/monkey.svg')
         },
-        xAxis: [
-          {
-            boundaryGap: false
-          }
-        ],
-        yAxis: [
-          {
-            type: 'value'
-          }
-        ]
-      }
+        { title: '订单', num: 7935, url: require('@/assets/img/home/shop.svg') }
+      ]
     }
-  },
-  methods: {}
+  }
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.box-card {
+  position: relative;
+  .right-area {
+    position: absolute;
+    right: 20px;
+    top: 25px;
+    text-align: center;
+    .top {
+      margin-bottom: 15px;
+      font-size: 16px;
+      color: rgba(0, 0, 0, 0.45);
+    }
+    .buttom {
+      font-size: 20px;
+      font-weight: 700;
+    }
+  }
+}
+#main,
+.welcome {
+  margin-top: 30px;
+  height: 400px;
+  text-align: center;
+  h1 {
+    margin-top: 40px;
+  }
+}
+#pie-left,
+#pie-right,
+#pie-middle {
+  margin-top: 30px;
+  height: 300px;
+}
+#piee {
+  margin-top: 30px;
+  height: 200px;
+}
+.avatar {
+  margin-top: 30px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+</style>
